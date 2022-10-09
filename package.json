@@ -10,14 +10,20 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:robot-sikuli.helloWorld"
+    "onCustomEditor:fauhokama.robotSikuli"
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
+    "customEditors": [
       {
-        "command": "robot-sikuli.helloWorld",
-        "title": "Hello World"
+        "viewType": "fauhokama.robotSikuli",
+        "displayName": "Robot Sikuli",
+        "selector": [
+          {
+            "filenamePattern": "*.robot"
+          }
+        ],
+        "priority": "default"
       }
     ]
   },
