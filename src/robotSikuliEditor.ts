@@ -71,7 +71,7 @@ export class RobotSikuliEditorProvider {
 			</head>
 
 			<body>
-                <div id="tag"> </div>
+                <div id="main"> </div>
                 <script src="${scriptUri}"></script>
 			</body> 
 			</html>`;
