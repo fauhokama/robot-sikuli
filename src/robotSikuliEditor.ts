@@ -1,28 +1,78 @@
 import * as vscode from 'vscode';
 
 export class RobotSikuliEditorProvider {
-    initPReview() {
-        // Create and show a new webview
-        const panel = vscode.window.createWebviewPanel(
-            'robotSikuli.openPreview', // Identifies the type of the webview. Used internally
-            'Robot Sikuli Preview', // Title of the panel displayed to the user
-            vscode.ViewColumn.Two, // Editor column to show the new webview panel in.
-            {} // Webview options. More on these later.
-        );
-        panel.webview.html = this.getWebviewContent();
+    private readonly context: vscode.ExtensionContext
+
+    constructor(context: vscode.ExtensionContext) {
+        this.context = context
     }
 
-    private getWebviewContent() {
-        return `<!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Cat Coding</title>
-      </head>
-      <body>
-          <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" />
-      </body>
-      </html>`;
+    initPreview(editor: vscode.TextEditor) {
+        const panel = vscode.window.createWebviewPanel(
+            'robotSikuli.openPreview',
+            'Robot Sikuli Preview',
+            vscode.ViewColumn.Two,
+            {
+                enableScripts: true
+            }
+        );
+
+        panel.webview.html = this.getWebviewContent(panel.webview);
+
+        function updateWebview() {
+            panel.webview.postMessage({
+                type: 'update',
+                text: editor.document.getText(),
+            });
+        }
+
+        const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument(e => {
+            updateWebview();
+        });
+
+        panel.onDidDispose(() => {
+            changeDocumentSubscription.dispose();
+        });
+
+        updateWebview();
+    }
+
+
+    private getWebviewContent(webview: vscode.Webview): string {
+        const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
+            this.context.extensionUri, 'media', 'webview.js'));
+
+        const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(
+            this.context.extensionUri, 'media', 'reset.css'));
+
+        const styleVSCodeUri = webview.asWebviewUri(vscode.Uri.joinPath(
+            this.context.extensionUri, 'media', 'vscode.css'));
+
+        const styleMainUri = webview.asWebviewUri(vscode.Uri.joinPath(
+            this.context.extensionUri, 'media', 'editor.css'));
+
+
+        return `
+			<!DOCTYPE html>
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>Robot Sikuli</title>
+
+                <link rel="preconnect" href="https://fonts.googleapis.com">
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+                <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+
+                <link href="${styleResetUri}" rel="stylesheet" />
+				<link href="${styleVSCodeUri}" rel="stylesheet" />
+				<link href="${styleMainUri}" rel="stylesheet" />
+			</head>
+
+			<body>
+                <div id="tag"> </div>
+                <script src="${scriptUri}"></script>
+			</body> 
+			</html>`;
     }
 }

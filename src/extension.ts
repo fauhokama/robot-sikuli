@@ -3,11 +3,15 @@ import { RobotSikuliEditorProvider } from "./robotSikuliEditor";
 
 export function activate(context: vscode.ExtensionContext) {
 
-  const contentProvider = new RobotSikuliEditorProvider()
+  const contentProvider = new RobotSikuliEditorProvider(context)
 
   context.subscriptions.push(
     vscode.commands.registerCommand('robotSikuli.openPreview', () => {
-      contentProvider.initPReview()
+
+      const editor = vscode.window.activeTextEditor
+      if (editor) {
+        contentProvider.initPreview(editor)
+      }
     })
   );
 }
