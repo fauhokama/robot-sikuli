@@ -23,7 +23,7 @@
             "filenamePattern": "*.robot"
           }
         ],
-        "priority": "option"
+        "priority": "default"
       }
     ]
   },

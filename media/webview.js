@@ -1,5 +1,8 @@
 // @ts-check
 
+// @ts-ignore
+const vscode = acquireVsCodeApi();
+
 window.addEventListener("message", (event) => {
   const message = event.data;
   switch (message.type) {
@@ -14,7 +17,7 @@ window.addEventListener("message", (event) => {
           const image = div.appendChild(document.createElement("img"));
           image.setAttribute(
             "src",
-            "http://bobbyhadz.com/images/blog/javascript-show-div-on-select-option/banner.webp"
+            "https://user-images.githubusercontent.com/109971/52649782-cf0d2880-2e9d-11e9-9dd0-e77296884359.png"
           );
           div.appendChild(document.createTextNode("\n"));
         } else {

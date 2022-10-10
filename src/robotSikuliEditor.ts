@@ -49,7 +49,17 @@ export class RobotSikuliEditorProvider implements vscode.CustomTextEditorProvide
 
     private getHtmlForWebview(webview: vscode.Webview): string {
         const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
-            this.context.extensionUri, 'src', 'webview.js'));
+            this.context.extensionUri, 'media', 'webview.js'));
+
+        const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(
+            this.context.extensionUri, 'media', 'reset.css'));
+
+        const styleVSCodeUri = webview.asWebviewUri(vscode.Uri.joinPath(
+            this.context.extensionUri, 'media', 'vscode.css'));
+
+        const styleMainUri = webview.asWebviewUri(vscode.Uri.joinPath(
+            this.context.extensionUri, 'media', 'editor.css'));
+
 
         return `
 			<!DOCTYPE html>
@@ -62,22 +72,16 @@ export class RobotSikuliEditorProvider implements vscode.CustomTextEditorProvide
                 <link rel="preconnect" href="https://fonts.googleapis.com">
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
                 <link href="https://fonts.googleapis.com/css2?family=Fira+Mono&display=swap" rel="stylesheet">
+
+                <link href="${styleResetUri}" rel="stylesheet" />
+				<link href="${styleVSCodeUri}" rel="stylesheet" />
+				<link href="${styleMainUri}" rel="stylesheet" />
 			</head>
 
 			<body>
                 <div id="tag"> </div>
+                <script src="${scriptUri}"></script>
 			</body> 
-            <style>
-            body {
-                white-space: pre-wrap;
-                font-family: 'Fira Mono', monospace;
-            }
-            img {
-                max-width: 100px;
-                margin-left: 30px;
-            }
-            </style>
-            <script src="${scriptUri}"></script>
 			</html>`;
     }
 }

@@ -1,0 +1,8 @@
+body {
+  white-space: pre-wrap;
+  font-family: "Fira Mono", monospace;
+}
+img {
+  max-width: 100px;
+  margin-left: 30px;
+}
