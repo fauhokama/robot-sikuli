@@ -10,20 +10,14 @@
     "Other"
   ],
   "activationEvents": [
-    "onCustomEditor:fauhokama.robotSikuli"
+    "onCommand:robotSikuli.openPreview"
   ],
   "main": "./out/extension.js",
   "contributes": {
-    "customEditors": [
+    "commands": [
       {
-        "viewType": "fauhokama.robotSikuli",
-        "displayName": "Robot Sikuli",
-        "selector": [
-          {
-            "filenamePattern": "*.robot"
-          }
-        ],
-        "priority": "default"
+        "command": "robotSikuli.openPreview",
+        "title": "Open Preview"
       }
     ]
   },
