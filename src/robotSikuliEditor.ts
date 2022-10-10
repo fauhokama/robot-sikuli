@@ -23,6 +23,7 @@ export class RobotSikuliEditorProvider {
             panel.webview.postMessage({
                 type: 'update',
                 text: editor.document.getText(),
+                path: editor.document.uri.fsPath
             });
         }
 
