@@ -1,9 +1,14 @@
 body {
   white-space: pre-wrap;
-  font-family: "Fira Mono", monospace;
-  line-height: 0.85;
+  font-family: Consolas, monaco, monospace;
+  line-height: 0.8;
+  padding: 0 20px;
 }
 img {
   max-width: 200px;
-  margin-left: 30px;
+  margin: 15px 30px 50px 80px;
+
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
 }
