@@ -11,23 +11,31 @@ export const getOs = () => {
     else if (process.platform === "win32") return "Windows"
 }
 
-export const getImgNames = (line: string) => {
+export const getImgPath = (line: string, filePath: string) => {
+    // folder from file + os
+    const folder = filePath.slice(0, filePath.lastIndexOf("/")) + "/" + getOs()
+
+    // Obtain images from line
     const parts = line.split(/(\s+)/);
-    const results = [];
+    const images = [];
     for (let part of parts) {
-        if (part.endsWith(".png")) results.push(part);
+        if (part.endsWith(".png")) images.push(part);
     }
-    return results;
-}
 
-export const getImgPath = (imgFolder: string, imgName: string) => {
-    const imgPath = `${imgFolder}/${imgName}`
-    if (existsSync(imgPath)) return imgPath
-    if (existsSync(imgPath.substring(1))) return imgPath // Easy way to solve Windows paths.
+    const toReturn = []
 
-    if (vscode.workspace.workspaceFolders !== undefined) {
-        let wf = vscode.workspace.workspaceFolders[0].uri.path;
+    for (let image of images) {
+        const imgPath = `${folder}/${image}`
+        if (existsSync(imgPath)) toReturn.push(imgPath)
+        else if (existsSync(imgPath.substring(1))) toReturn.push(imgPath) // Easy way to solve Windows paths.
+        // If not found, look for Images/System
+        else {
+            if (vscode.workspace.workspaceFolders !== undefined) {
+                let wf = vscode.workspace.workspaceFolders[0].uri.path;
 
-        return `/${glob.sync(`${wf.substring(1)}/Images/${getOs()}/**/${imgName}`)[0]}`;
+                toReturn.push(`/${glob.sync(`${wf.substring(1)}/Images/${getOs()}/**/${image}`)[0]}`);
+            }
+        }
     }
+    return toReturn
 }

@@ -1,6 +1,6 @@
-import path = require('path');
 import * as vscode from 'vscode';
-import { getImgNames, getImgPath, getOs } from './utils';
+import { getImgPath } from './utils';
+
 export class RobotSikuliEditorProvider {
     private readonly context: vscode.ExtensionContext
 
@@ -42,6 +42,8 @@ export class RobotSikuliEditorProvider {
 
             if (line.includes("F Click In")) {
                 html += this.clickIn(line, editor.document.uri.path)
+            } else if (line.includes("F Click")) {
+                html += this.click(line, editor.document.uri.path)
             } else {
                 html += `<p>${line}</p>`
             }
@@ -53,24 +55,29 @@ export class RobotSikuliEditorProvider {
         });
     }
 
-    private clickIn(line: string, filePath: string) {
-        const folder = filePath.slice(0, filePath.lastIndexOf("/"))
-        const imgs = getImgNames(line)
-        const imgFolder = `${folder}/${getOs()}`
-
-        const area = getImgPath(imgFolder, imgs[0])
-        const target = getImgPath(imgFolder, imgs[1])
-
+    private click(line: string, filePath: string) {
+        const img = getImgPath(line, filePath)
         return `
-                <div class="highlight">
-                    <p>${line.trim()}</p>
-                    <div class="div-clickIn">
-                        <img src="https://file+.vscode-resource.vscode-cdn.net${area}" />
-                        <img src="https://file+.vscode-resource.vscode-cdn.net${target}" />
-                    </div>
-                </div>`
+        <div class="highlight">
+            <p>${line.trim()}</p>
+            <div class="div-clickIn" >
+                <img src="https://file+.vscode-resource.vscode-cdn.net${img[0]}" />
+            </div>
+        </div>`
     }
 
+    private clickIn(line: string, filePath: string) {
+        const img = getImgPath(line, filePath)
+
+        return `
+            <div class="highlight" >
+                <p>${line.trim()} </p>
+                <div class="div-clickIn" >
+                    <img src="https://file+.vscode-resource.vscode-cdn.net${img[0]}" />
+                    <img src="https://file+.vscode-resource.vscode-cdn.net${img[1]}" />
+                </div>
+            </div>`
+    }
 
     private getWebviewContent(webview: vscode.Webview): string {
         const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(
