@@ -54,15 +54,18 @@ export class RobotSikuliEditorProvider {
     }
 
     private clickIn(line: string, path: string) {
-        const folder = path.slice(0, path.lastIndexOf('/'))
+        let separator = "/"
+        if (getOs() === "Windows") separator = "\\"
+
+        const folder = path.slice(0, path.lastIndexOf(separator))
         const imgs = getImgNames(line)
 
         return `
                 <div class="highlight">
                     <p>${line.trim()}</p>
                     <div class="div-clickIn">
-                        <img src="https://file+.vscode-resource.vscode-cdn.net${folder}/${getOs()}/${imgs[0]}" />
-                        <img src="https://file+.vscode-resource.vscode-cdn.net${folder}/${getOs()}/${imgs[1]}" />
+                        <img src="https://file+.vscode-resource.vscode-cdn.net/${folder}/${getOs()}/${imgs[0]}" />
+                        <img src="https://file+.vscode-resource.vscode-cdn.net/${folder}/${getOs()}/${imgs[1]}" />
                     </div>
                 </div>`
     }

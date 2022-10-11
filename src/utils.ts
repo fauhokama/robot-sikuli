@@ -1,7 +1,12 @@
+import * as vscode from "vscode";
+
+
 export const getOs = () => {
-    if (process.platform === "darwin") {
-        return "Darwin"
-    }
+    const { operativeSystem } = vscode.workspace.getConfiguration('robotSikuli')
+
+    if (operativeSystem) return operativeSystem
+    else if (process.platform === "darwin") return "Darwin"
+    else if (process.platform === "win32") return "Windows"
 }
 
 export const getImgNames = (line: string) => {

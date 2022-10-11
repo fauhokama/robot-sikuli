@@ -19,7 +19,16 @@
         "command": "robotSikuli.openPreview",
         "title": "Open Preview"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Robot Sikuli",
+      "properties": {
+        "robotSikuli.operativeSystem": {
+          "type": "string",
+          "description": "Look for images in Darwin / Windows / Linux folder."
+        }
+      }
+    }
   },
   "scripts": {
     "compile": "tsc -p ./",
