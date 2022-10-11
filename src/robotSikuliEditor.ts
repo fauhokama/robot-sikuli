@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { getImgNames, getOs } from './utils';
 
 export class RobotSikuliEditorProvider {
     private readonly context: vscode.ExtensionContext
@@ -19,23 +20,51 @@ export class RobotSikuliEditorProvider {
 
         panel.webview.html = this.getWebviewContent(panel.webview);
 
-        function updateWebview() {
-            panel.webview.postMessage({
-                type: 'update',
-                text: editor.document.getText(),
-                path: editor.document.uri.fsPath
-            });
-        }
 
         const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument(e => {
-            updateWebview();
+            this.updateWebview(panel, editor);
         });
 
         panel.onDidDispose(() => {
             changeDocumentSubscription.dispose();
         });
 
-        updateWebview();
+        this.updateWebview(panel, editor);
+    }
+
+    private updateWebview(panel: vscode.WebviewPanel, editor: vscode.TextEditor) {
+        const text = editor.document.getText()
+        const lines = text.split(/\r?\n/);
+
+        let html = ""
+        for (let line of lines) {
+            if (line.length === 0) line = " "
+
+            if (line.includes("F Click In")) {
+                html += this.clickIn(line, editor.document.uri.fsPath)
+            } else {
+                html += `<p>${line}</p>`
+            }
+        }
+
+        panel.webview.postMessage({
+            type: 'update',
+            html
+        });
+    }
+
+    private clickIn(line: string, path: string) {
+        const folder = path.slice(0, path.lastIndexOf('/'))
+        const imgs = getImgNames(line)
+
+        return `
+                <div class="highlight">
+                    <p>${line.trim()}</p>
+                    <div class="div-clickIn">
+                        <img src="https://file+.vscode-resource.vscode-cdn.net${folder}/${getOs()}/${imgs[0]}" />
+                        <img src="https://file+.vscode-resource.vscode-cdn.net${folder}/${getOs()}/${imgs[1]}" />
+                    </div>
+                </div>`
     }
 
 
@@ -67,7 +96,7 @@ export class RobotSikuliEditorProvider {
 			</head>
 
 			<body>
-                <div id="main"> </div>
+                <div id="main" />
                 <script src="${scriptUri}"></script>
 			</body> 
 			</html>`;
