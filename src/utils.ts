@@ -1,3 +1,5 @@
+import { existsSync } from "fs";
+import { glob } from "glob";
 import * as vscode from "vscode";
 
 
@@ -16,4 +18,16 @@ export const getImgNames = (line: string) => {
         if (part.endsWith(".png")) results.push(part);
     }
     return results;
+}
+
+export const getImgPath = (imgFolder: string, imgName: string) => {
+    const imgPath = `${imgFolder}/${imgName}`
+    if (existsSync(imgPath)) return imgPath
+    if (existsSync(imgPath.substring(1))) return imgPath // Easy way to solve Windows paths.
+
+    if (vscode.workspace.workspaceFolders !== undefined) {
+        let wf = vscode.workspace.workspaceFolders[0].uri.path;
+
+        return `/${glob.sync(`${wf.substring(1)}/Images/${getOs()}/**/${imgName}`)[0]}`;
+    }
 }
