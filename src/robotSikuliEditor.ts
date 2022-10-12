@@ -46,6 +46,8 @@ export class RobotSikuliEditorProvider {
                 html += this.click(line, editor.document.uri.path)
             } else if (line.includes("F Wait Until Screen Contains")) {
                 html += this.waitUntilScreenContains(line, editor.document.uri.path)
+            } else if (line.includes("F Double Click")) {
+                html += this.doubleClick(line, editor.document.uri.path)
             } else {
                 html += `<p>${line}</p>`
             }
@@ -55,6 +57,17 @@ export class RobotSikuliEditorProvider {
             type: 'update',
             html
         });
+    }
+
+    private doubleClick(line: string, filePath: string) {
+        const img = getImgPath(line, filePath)
+        return `
+        <div class="highlight">
+            <p>${line.trim()}</p>
+            <div class="div-clickIn" >
+                <img src="https://file+.vscode-resource.vscode-cdn.net${img[0]}" />
+            </div>
+        </div>`
     }
 
     private waitUntilScreenContains(line: string, filePath: string) {
