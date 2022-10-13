@@ -48,10 +48,10 @@ export class RobotSikuliEditorProvider {
                 html += this.waitUntilScreenContain(line, editor.document.uri.path)
             } else if (line.includes("F Wait Until Screen Not Contain")) {
                 html += this.waitUntilScreenNotContain(line, editor.document.uri.path)
-            } else if (line.includes("F Double Click")) {
-                html += this.doubleClick(line, editor.document.uri.path)
             } else if (line.includes("F Double Click In")) {
                 html += this.doubleClickIn(line, editor.document.uri.path)
+            } else if (line.includes("F Double Click")) {
+                html += this.doubleClick(line, editor.document.uri.path)
             } else {
                 html += `<p>${line}</p>`
             }
