@@ -44,10 +44,10 @@ export class RobotSikuliEditorProvider {
                 html += this.clickIn(line, editor.document.uri.path)
             } else if (line.includes("F Click")) {
                 html += this.click(line, editor.document.uri.path)
-            } else if (line.includes("F Wait Until Screen Contains")) {
-                html += this.waitUntilScreenContains(line, editor.document.uri.path)
-            } else if (line.includes("F Wait Until Screen Not Contains")) {
-                html += this.waitUntilScreenNotContains(line, editor.document.uri.path)
+            } else if (line.includes("F Wait Until Screen Contain")) {
+                html += this.waitUntilScreenContain(line, editor.document.uri.path)
+            } else if (line.includes("F Wait Until Screen Not Contain")) {
+                html += this.waitUntilScreenNotContain(line, editor.document.uri.path)
             } else if (line.includes("F Double Click")) {
                 html += this.doubleClick(line, editor.document.uri.path)
             } else {
@@ -72,7 +72,7 @@ export class RobotSikuliEditorProvider {
         </div>`
     }
 
-    private waitUntilScreenNotContains(line: string, filePath: string) {
+    private waitUntilScreenNotContain(line: string, filePath: string) {
         const img = getImgPath(line, filePath)
         return `
         <div class="highlight">
@@ -83,7 +83,7 @@ export class RobotSikuliEditorProvider {
         </div>`
     }
 
-    private waitUntilScreenContains(line: string, filePath: string) {
+    private waitUntilScreenContain(line: string, filePath: string) {
         const img = getImgPath(line, filePath)
         return `
         <div class="highlight">
