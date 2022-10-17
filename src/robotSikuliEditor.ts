@@ -43,10 +43,8 @@ export class RobotSikuliEditorProvider {
             const { oneImg } = vscode.workspace.getConfiguration('robotSikuli')
             const { twoImg } = vscode.workspace.getConfiguration('robotSikuli')
 
-            const trimmedLine = line.trim()
-
-            if (oneImg.includes(trimmedLine)) html += this.oneImg(line, editor.document.uri.path)
-            else if (twoImg.includes(trimmedLine)) html += this.twoImg(line, editor.document.uri.path)
+            if (twoImg.some((w: string) => line.includes(w))) html += this.twoImg(line, editor.document.uri.path)
+            else if (oneImg.some((w: string) => line.includes(w))) html += this.oneImg(line, editor.document.uri.path)
             else html += `<p>${line}</p>`
         }
 
