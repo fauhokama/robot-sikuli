@@ -40,21 +40,12 @@ export class RobotSikuliEditorProvider {
         for (let line of lines) {
             if (line.length === 0) line = " "
 
-            if (line.includes("F Click In")) {
-                html += this.clickIn(line, editor.document.uri.path)
-            } else if (line.includes("F Click")) {
-                html += this.click(line, editor.document.uri.path)
-            } else if (line.includes("F Wait Until Screen Contain")) {
-                html += this.waitUntilScreenContain(line, editor.document.uri.path)
-            } else if (line.includes("F Wait Until Screen Not Contain")) {
-                html += this.waitUntilScreenNotContain(line, editor.document.uri.path)
-            } else if (line.includes("F Double Click In")) {
-                html += this.doubleClickIn(line, editor.document.uri.path)
-            } else if (line.includes("F Double Click")) {
-                html += this.doubleClick(line, editor.document.uri.path)
-            } else {
-                html += `<p>${line}</p>`
-            }
+            const { oneImg } = vscode.workspace.getConfiguration('robotSikuli')
+            const { twoImg } = vscode.workspace.getConfiguration('robotSikuli')
+
+            if (oneImg.includes(line)) html += this.oneImg(line, editor.document.uri.path)
+            else if (twoImg.includes(line)) html += this.twoImg(line, editor.document.uri.path)
+            else html += `<p>${line}</p>`
         }
 
         panel.webview.postMessage({
@@ -63,7 +54,7 @@ export class RobotSikuliEditorProvider {
         });
     }
 
-    private doubleClick(line: string, filePath: string) {
+    private oneImg(line: string, filePath: string) {
         const img = getImgPath(line, filePath)
         return `
         <div class="highlight">
@@ -74,54 +65,7 @@ export class RobotSikuliEditorProvider {
         </div>`
     }
 
-    private waitUntilScreenNotContain(line: string, filePath: string) {
-        const img = getImgPath(line, filePath)
-        return `
-        <div class="highlight">
-            <p>${line.trim()}</p>
-            <div class="div-clickIn" >
-                <img src="https://file+.vscode-resource.vscode-cdn.net${img[0]}" />
-            </div>
-        </div>`
-    }
-
-    private waitUntilScreenContain(line: string, filePath: string) {
-        const img = getImgPath(line, filePath)
-        return `
-        <div class="highlight">
-            <p>${line.trim()}</p>
-            <div class="div-clickIn" >
-                <img src="https://file+.vscode-resource.vscode-cdn.net${img[0]}" />
-            </div>
-        </div>`
-    }
-
-    private click(line: string, filePath: string) {
-        const img = getImgPath(line, filePath)
-        return `
-        <div class="highlight">
-            <p>${line.trim()}</p>
-            <div class="div-clickIn" >
-                <img src="https://file+.vscode-resource.vscode-cdn.net${img[0]}" />
-            </div>
-        </div>`
-    }
-
-
-    private doubleClickIn(line: string, filePath: string) {
-        const img = getImgPath(line, filePath)
-
-        return `
-            <div class="highlight" >
-                <p>${line.trim()} </p>
-                <div class="div-clickIn" >
-                    <img src="https://file+.vscode-resource.vscode-cdn.net${img[0]}" />
-                    <img src="https://file+.vscode-resource.vscode-cdn.net${img[1]}" />
-                </div>
-            </div>`
-    }
-
-    private clickIn(line: string, filePath: string) {
+    private twoImg(line: string, filePath: string) {
         const img = getImgPath(line, filePath)
 
         return `

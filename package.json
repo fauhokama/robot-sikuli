@@ -26,6 +26,24 @@
         "robotSikuli.operativeSystem": {
           "type": "string",
           "description": "Look for images in Darwin / Windows / Linux folder."
+        },
+        "robotSikuli.oneImg": {
+          "type": "array",
+          "description": "Keywords to trigger a one image display",
+          "default": [
+            "Click",
+            "Wait Until Screen Contain",
+            "Wait Until Screen Not Contain",
+            "Double Click"
+          ]
+        },
+        "robotSikuli.twoImg": {
+          "type": "array",
+          "description": "Keywords to trigger a two image display",
+          "default": [
+            "Click In",
+            "Double Click In"
+          ]
         }
       }
     }
