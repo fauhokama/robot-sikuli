@@ -42,7 +42,8 @@
           "description": "Keywords to trigger a two image display",
           "default": [
             "Click In",
-            "Double Click In"
+            "Double Click In",
+            "Drag And Drop"
           ]
         }
       }
