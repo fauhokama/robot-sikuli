@@ -1,5 +1,4 @@
 import { existsSync } from "fs";
-import { glob } from "glob";
 import * as vscode from "vscode";
 
 
@@ -33,7 +32,7 @@ export const getImgPath = (line: string, filePath: string) => {
             if (vscode.workspace.workspaceFolders !== undefined) {
                 let wf = vscode.workspace.workspaceFolders[0].uri.path;
 
-                toReturn.push(`/${glob.sync(`${wf.substring(1)}/Images/${getOs()}/**/${image}`)[0]}`);
+                toReturn.push(`/${wf.substring(1)}/Images/${getOs()}/${image}`);
             }
         }
     }
